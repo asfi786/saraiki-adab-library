@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ajrak-crimson: #8c1d2c;
+  --ajrak-indigo: #16284e;
+  --ajrak-ecru: #f7f2e7;
+  --ajrak-iron: #1a1a1a;
+  --ajrak-gold: #d4a24c;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+}
+
+/* ------------------------------------------------------------------
+   Nastaliq-safe typography (spec: text must NEVER be cut off)
+   - Body/reading text: line-height 2.4 (spec range 2.2–2.6)
+   - Headings h1–h3: line-height 2.1 (spec range 2.0–2.4) + padding-block
+     so ascenders/descenders (ٻ ڄ ڳ ݙ and all dots/diacritics) have room.
+   - Buttons get a roomy line-height so single-line labels never clip.
+------------------------------------------------------------------- */
+.font-nastaliq {
+  line-height: 2.4;
+  /* Nastaliq renders small — scale up ~25% for parity with Latin text */
+  font-size: 1.12em;
+}
+
+h1.font-nastaliq,
+h2.font-nastaliq,
+h3.font-nastaliq {
+  line-height: 2.1;
+  padding-block: 0.28em;
+}
+
+button {
+  line-height: 1.9;
+}
+
+/* ------------------------------------------------------------------
+   Subtle Ajrak lattice across the whole site (spec: subtle, never
+   fighting the text). Transparent tile with fine line motifs only —
+   no solid colour field. ~5% opacity so readability is untouched.
+------------------------------------------------------------------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'><g fill='none' stroke='%235A6B8C' stroke-width='1'><path d='M0,60 L240,60 M0,120 L240,120 M0,180 L240,180 M60,0 L60,240 M120,0 L120,240 M180,0 L180,240'/></g><g fill='none' stroke='%238C1D2C' stroke-width='1.2'><path d='M120,88 L128,112 L152,120 L128,128 L120,152 L112,128 L88,120 L112,112 Z'/></g><g fill='%23D4A24C'><circle cx='60' cy='60' r='2.5'/><circle cx='180' cy='60' r='2.5'/><circle cx='60' cy='180' r='2.5'/><circle cx='180' cy='180' r='2.5'/><circle cx='120' cy='120' r='2'/></g></svg>");
+  opacity: 0.05;
+}
+.dark body::before {
+  opacity: 0.07;
+}
+
+/* Calm radial vignette for the hero: centre stays nearly plain so the
+   heading/paragraph/search sit on quiet ground, the pattern whispers
+   only at the edges and corners (spec item 2). */
+.hero-vignette {
+  background: radial-gradient(
+    ellipse 68% 62% at 50% 42%,
+    rgba(13, 24, 48, 0.97) 0%,
+    rgba(13, 24, 48, 0.78) 42%,
+    rgba(13, 24, 48, 0.28) 72%,
+    rgba(13, 24, 48, 0) 100%
+  );
+}
+
+::selection {
+  background: var(--ajrak-crimson);
+  color: var(--ajrak-ecru);
+}
+.dark ::selection {
+  background: var(--ajrak-gold);
+  color: var(--ajrak-iron);
+}
+
+/* Slim, themed scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ajrak-crimson) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--ajrak-crimson);
+  border-radius: 8px;
+}
+.dark *::-webkit-scrollbar-thumb {
+  background: var(--ajrak-gold);
+}
+
+/* Focus visibility for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--ajrak-crimson);
+  outline-offset: 2px;
+}
+.dark :focus-visible {
+  outline-color: var(--ajrak-gold);
+}
+
+/* RTL-aware logical helpers beyond Tailwind's defaults */
+[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
+
+/* Thin horizontal scroll rows without visible scrollbar */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
